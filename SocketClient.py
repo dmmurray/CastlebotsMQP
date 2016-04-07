@@ -16,5 +16,9 @@ class SocketClient:
 		if (incoming):
 			self.commands.append(incoming)
 
+	def writeSocket(self, location, timestamp):
+		sendString = location + "," + timestamp
+		self.s.send(sendString)
+
 	def closeSocket(self):
 		self.s.close()
