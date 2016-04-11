@@ -1,0 +1,68 @@
+/* Encoder Library - Basic Example
+ * http://www.pjrc.com/teensy/td_libs_Encoder.html
+ * This example code is in the public domain.
+ *
+ * Modified by Corey on 4/11
+ *
+ * Notes:
+ *    requires Arduino Uno pins 2, 3, 4, and 5
+ *    whichever encoder is designated Encoder 1 will have its distance flipped
+ *        --if this needs to be changed, look to first line of encoders()
+ */
+
+#include <Encoder.h>
+
+// Change these two numbers to the pins connected to your encoder.
+//   Best Performance: both pins have interrupt capability
+//   Good Performance: only the first pin has interrupt capability
+//   Low Performance:  neither pin has interrupt capability
+
+// Arduino Uno pins 2 and 3 should have interrupt capability
+Encoder enc1(2, 4);
+Encoder enc2(3, 5);
+//   avoid using pins with LEDs attached
+//   on Arduino Uno, that should be just pin 13
+
+void setup() {
+  Serial.begin(9600);
+  Serial.println("Setup complete");
+}
+
+long oldPosition1  = -999;
+long oldPosition2  = -999;
+int distance1 = 0;
+int distance2 = 0;
+
+void loop() {
+  encoders();
+  
+  
+// Reset encoders  
+//  enc1.write(0); 
+//  enc2.write(0);
+}
+
+
+void encoders() {
+  long newPosition1 = 0 - enc1.read();
+  long newPosition2 = enc2.read();
+  
+  if (newPosition1 != oldPosition1 || newPosition2 != oldPosition2) {
+    oldPosition1 = newPosition1;
+    oldPosition2 = newPosition2;
+    
+    distance1 = calcDist(newPosition1);
+    distance2 = calcDist(newPosition2);
+    
+    Serial.print(distance1);
+    Serial.println(" cm for Encoder 1");
+    Serial.print(distance2);
+    Serial.println(" cm for Encoder 2");
+  }
+}
+
+int calcDist(long encVal) {
+  float value = encVal / 250.7;
+  int sol = value;
+  return sol;
+}
