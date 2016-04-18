@@ -1,8 +1,8 @@
-import SocketServer
+import SocketClient
 import Microphone
 
 def main():
-	socket1 = SocketServer('Castlebots1', 8080)
+	socket1 = SocketClient('Castlebots1', 8080)
 	mic1 = Microphone()
 	socket1.connectSocket()
 	mic1.read()
